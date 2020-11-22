@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../static/styles/bootstrap.min.css" th:href="@{/styles/bootstrap.min.css}">
+
+</head>
+<body>
+    <p>Welcome to your dashboard!</p>
+
+    <form th:action="@{/logout}" method="POST">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </div>
+    </form>
+<script src="../scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
+<script src="../scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
+</body>
+</html>
