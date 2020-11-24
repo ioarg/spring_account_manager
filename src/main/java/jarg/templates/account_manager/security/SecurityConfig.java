@@ -6,64 +6,49 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.util.Properties;
 
 @Configuration
 @EnableWebSecurity
-@PropertySource("classpath:/security.properties")
+@PropertySource("security.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private Environment env;
-
-    /****************************************************************
-     * Define Datasource For Security
-     ***************************************************************/
-    @Bean
-    public DataSource getSecurityDatasource(){
-        ComboPooledDataSource ds = new ComboPooledDataSource();
-        // Setup the connection
-        try {
-            ds.setDriverClass(env.getProperty("security.datasource.driver"));
-        } catch (PropertyVetoException e) {
-            throw new RuntimeException(e);
-        }
-        ds.setJdbcUrl(env.getProperty("security.datasource.url"));
-        ds.setUser(env.getProperty("security.datasource.username"));
-        ds.setPassword(env.getProperty("security.datasource.password"));
-        // Setup connection pool
-        ds.setInitialPoolSize(Integer.parseInt(
-                env.getProperty("security.connection_pool.initialPoolSize")));
-        ds.setMinPoolSize(Integer.parseInt(
-                env.getProperty("security.connection_pool.minPoolSize")));
-        ds.setMaxPoolSize(Integer.parseInt(
-                env.getProperty("security.connection_pool.maxPoolSize")));
-        ds.setMaxIdleTime(Integer.parseInt(
-                env.getProperty("security.connection_pool.maxIdleTime")));
-        return ds;
-    }
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     /***********************************************************************
     * Configure the Authentication here
     ************************************************************************/
-//    @Bean
-//    public PasswordEncoder getPasswordEncoder(){
-//        return new BCryptPasswordEncoder(12);
-//    }
+    @Bean
+    public PasswordEncoder getPasswordEncoder(){
+        return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(getPasswordEncoder());
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(getSecurityDatasource());
- //               .passwordEncoder(getPasswordEncoder());
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     /***********************************************************************
@@ -91,5 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage(registrationPage)
                     .loginProcessingUrl(loginProcessingUrl)
                     .permitAll();
+
     }
 }
