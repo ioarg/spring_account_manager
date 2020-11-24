@@ -1,6 +1,7 @@
 package jarg.templates.account_manager.security;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import net.bytebuddy.build.Plugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
@@ -35,6 +37,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     ************************************************************************/
     @Bean
     public PasswordEncoder getPasswordEncoder(){
+
+//        // No-op encoder for testing
+//        return new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence charSequence) {
+//                return charSequence.toString();
+//            }
+//
+//            @Override
+//            public boolean matches(CharSequence charSequence, String s) {
+//                return s.equals(charSequence.toString());
+//            }
+//        };
         return new BCryptPasswordEncoder(12);
     }
 
@@ -72,10 +87,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                     .authenticated()
                 .and()
+                    .sessionManagement()
+                    .sessionFixation()
+                    .newSession()
+                .and()
                 .formLogin()
                     .loginPage(registrationPage)
                     .loginProcessingUrl(loginProcessingUrl)
-                    .permitAll();
-
+                    .defaultSuccessUrl("/")
+                    .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
 }

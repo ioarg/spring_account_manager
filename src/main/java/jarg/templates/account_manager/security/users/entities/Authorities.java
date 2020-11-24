@@ -35,4 +35,12 @@ public class Authorities {
     public void setRoles(String roles) {
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+        return "Authorities{" +
+                "id=" + id +
+                ", roles='" + roles + '\'' +
+                '}';
+    }
 }

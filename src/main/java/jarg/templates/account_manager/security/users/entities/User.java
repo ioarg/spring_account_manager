@@ -20,6 +20,7 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="id", referencedColumnName = "authority_id")
     private Authorities authorities;
 
 
@@ -89,5 +90,18 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", enabled=" + enabled +
+                ", authorities=" + authorities +
+                '}';
     }
 }

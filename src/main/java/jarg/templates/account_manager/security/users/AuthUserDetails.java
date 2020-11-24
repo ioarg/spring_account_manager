@@ -20,6 +20,8 @@ public class AuthUserDetails implements UserDetails {
         authorityList = Arrays.stream(user.getAuthorities().getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+
+        System.out.println("User : "+ user);
     }
 
     @Override

@@ -28,7 +28,7 @@ values (1, "ROLE_USER");
 insert into users 
 values (1,
 		"test",
-		"{bcrypt}$2y$12$Nl1a.JRurJnDecrAEdE01.AcZwJ/DEeINtYiV/fxp6Z4C/wIveuLG",
+		"$2a$12$s8E4se4znoYOrIwQK7jQbeXMgKxvvb5QkSSbsOdH7EjQNQZrB5z82",
 		"John",
 		"Mayers",
 		1,
