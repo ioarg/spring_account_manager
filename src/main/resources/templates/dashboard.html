@@ -7,6 +7,7 @@
 
 </head>
 <body>
+    <p>Hello <span th:text="${firstName}">[First Name]</span> <span th:text="${lastName}">[LastName]</span> </p>
     <p>Welcome to your dashboard!</p>
 
     <form th:action="@{/logout}" method="POST">
