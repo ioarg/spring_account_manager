@@ -16,7 +16,7 @@ public class Authorities {
     public Authorities(){
     }
 
-    public Authorities(String roles, User user) {
+    public Authorities(String roles) {
         this.roles = roles;
     }
 

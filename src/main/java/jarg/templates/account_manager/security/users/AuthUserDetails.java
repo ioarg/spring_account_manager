@@ -1,6 +1,8 @@
 package jarg.templates.account_manager.security.users;
 
 import jarg.templates.account_manager.security.users.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AuthUserDetails implements UserDetails {
+    private static final Logger logger = LoggerFactory.getLogger(AuthUserDetails.class);
 
     private User user;
     private List<GrantedAuthority> authorityList;
@@ -20,8 +23,7 @@ public class AuthUserDetails implements UserDetails {
         authorityList = Arrays.stream(user.getAuthorities().getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-
-        System.out.println("User : "+ user);
+       logger.debug("User : "+ user);
     }
 
     @Override

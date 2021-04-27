@@ -16,7 +16,7 @@
 	<description>Manages users accounts with Spring Security</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<c3p0.version>0.9.5.5</c3p0.version>
 		<cj.version>8.0.22</cj.version>
 		<jackson.version>2.11.3</jackson.version>
@@ -50,7 +50,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -79,6 +78,15 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

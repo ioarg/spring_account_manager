@@ -4,7 +4,7 @@ import jarg.templates.account_manager.security.users.UserRepository;
 import jarg.templates.account_manager.security.users.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class AccountController {
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository repository;
 
@@ -75,7 +75,7 @@ public class AccountController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteAccount(HttpServletRequest request){
         Optional<User> userOpt = getUser(request);
-        if(userOpt.isEmpty()){
+        if(userOpt.isPresent()){
             return "User not found.";
         }
         repository.delete(userOpt.get());
@@ -103,7 +103,7 @@ public class AccountController {
                     "not both";
         }
         Optional<User> userOpt = getUser(request);
-        if(userOpt.isEmpty()){
+        if(userOpt.isPresent()){
             return "User not found.";
         }
         User user = userOpt.get();

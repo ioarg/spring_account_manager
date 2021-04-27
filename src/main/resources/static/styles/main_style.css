@@ -1,6 +1,41 @@
-form{
+body{
+    background-color: #376369;
+    color: white;
+}
+
+#create-modal{
+    color: black;
+}
+
+.main-form{
     width : 500px;
-    height: 500px;
+    height: 250px;
     margin-left : auto;
     margin-right : auto;
+    color : white;
+    background-color: #257f8d;
+    font-weight: bold;
+    padding: 20px;
+    border-radius:10px;
+    box-shadow: 1px 1px 4px black;
+}
+
+
+.btn, .btn-primary{
+    font-weight: bold;
+    background-color: #4cb0d1;
+}
+
+.centered-box{
+    padding: 20px;
+    text-align: center;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#create-acc-modal-btn{
+    text-decoration: none;
+    color : #a9e6fa;
+    font-weight: bold;
 }

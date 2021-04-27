@@ -1,5 +1,7 @@
 package jarg.templates.account_manager.security.users.entities;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,7 +22,8 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id", referencedColumnName = "authority_id")
+    @JoinColumn(name="authority_id", referencedColumnName = "id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Authorities authorities;
 
 
@@ -34,6 +37,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         enabled = true;
+        authorities = new Authorities("ROLE_USER");
     }
 
     public int getId() {

@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@PropertySource("security.properties")
+@PropertySource("classpath:security.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -29,19 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     ************************************************************************/
     @Bean
     public PasswordEncoder getPasswordEncoder(){
-
-//        // No-op encoder for testing
-//        return new PasswordEncoder() {
-//            @Override
-//            public String encode(CharSequence charSequence) {
-//                return charSequence.toString();
-//            }
-//
-//            @Override
-//            public boolean matches(CharSequence charSequence, String s) {
-//                return s.equals(charSequence.toString());
-//            }
-//        };
         return new BCryptPasswordEncoder(12);
     }
 
@@ -74,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String logoutProcessingUrl = env.getProperty("security.web_pages.logoutProcessingUrl");
 
         http.authorizeRequests()
-                .antMatchers("/styles/**", "/scripts/**")
+                .antMatchers("/styles/**", "/scripts/**",
+                        "/create_account", "/delete_account", "/update_names")
                     .permitAll()
                 .anyRequest()
                     .authenticated()
@@ -90,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                 .logout()
+                    .logoutUrl(logoutProcessingUrl)
                 .permitAll();
     }
 }

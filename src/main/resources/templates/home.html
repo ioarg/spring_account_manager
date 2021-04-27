@@ -2,24 +2,71 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Security Module</title>
     <link rel="stylesheet" href="../static/styles/bootstrap.min.css" th:href="@{/styles/bootstrap.min.css}">
     <link rel="stylesheet" href="../static/styles/main_style.css" th:href="@{/styles/main_style.css}">
 </head>
 <body>
-    <p>Welcome to this Spring Security Module</p>
-
-    <form th:action="@{/connect}" method="POST">
-        <div class="form-group">
-            <label for="username">Username</label><br>
-            <input type="text" id="username" name="username" class="form-control">
-            <label for="password">Password</label><br>
-            <input type="password" id="password" name="password" class="form-control"><br>
-            <button type="submit" class="btn btn-primary">Login</button>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Security Template</a>
         </div>
-    </form>
+    </nav>
+    <!-- Main Page Body -->
+    <div class="container-fluid">
+        <h4 class="centered-box">Welcome to this Spring Security Module</h4>
 
-<script src="../scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
-<script src="../scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
+        <form class="main-form" th:action="@{/connect}" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label><br>
+                <input type="text" id="username" name="username" class="form-control">
+                <label for="password">Password</label><br>
+                <input type="password" id="password" name="password" class="form-control"><br>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+
+        <p class="centered-box">New user? Create an account 
+            <a href="#" id="create-acc-modal-btn">here</a> 
+        </p>
+    </div>
+    <!-- Dialog for creating a user account -->
+    <div id="create-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Create User Account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form id="create-acc-form" th:action="@{/create_account}" method="POST">
+                    <div class="form-group">
+                        <label for="username">Username</label><br>
+                        <input type="text" id="username" name="username" class="form-control">
+                        <label for="password">Password</label><br>
+                        <input type="password" id="password" name="password" class="form-control">
+                        <label for="first_name">First Name</label><br>
+                        <input type="text" id="first_name" name="first_name" class="form-control">
+                        <label for="last_name">Last Name</label><br>
+                        <input type="text" id="last_name" name="last_name" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button id="create-acc-btn" type="button" class="btn btn-primary">
+                Create Account
+              </button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<script src="../static/scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
+<script src="../static/scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
+<script src="../static/scripts/home.js" th:src="@{/scripts/home.js}"></script>
 </body>
 </html>
