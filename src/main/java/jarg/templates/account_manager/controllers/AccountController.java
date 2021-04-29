@@ -4,6 +4,7 @@ import jarg.templates.account_manager.security.users.UserRepository;
 import jarg.templates.account_manager.security.users.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,16 +39,24 @@ public class AccountController {
     @PostMapping(
             path = "/create_account",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String createAccount(@RequestParam("username") String username,
-                                @RequestParam("password") String password,
-                                @RequestParam("first_name") String firstName,
-                                @RequestParam("last_name") String lastName){
+    public ResponseEntity<String> createAccount(@RequestParam("username") String username,
+                                               @RequestParam("password") String password,
+                                               @RequestParam("first_name") String firstName,
+                                               @RequestParam("last_name") String lastName){
+
+        // check if the username already exists
+        Optional<User> userOptional = repository.findByUsername(username);
+        if (userOptional.isPresent()){
+            return ResponseEntity.badRequest().body("Failed to create account. This username already exists.");
+        }
+
         // let's encrypt the password first
         String encrPassword = passwordEncoder.encode(password);
         // save username and password to db
         User newUser = new User(username, encrPassword, firstName, lastName);
         repository.save(newUser);
-        return "done";
+
+        return ResponseEntity.ok("Success");
     }
 
 

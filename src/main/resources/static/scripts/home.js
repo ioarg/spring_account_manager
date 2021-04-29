@@ -1,11 +1,37 @@
 const CREATE_ACC_URL = "/create_account";
-const create_acc_success = function(data, status, jqXHR){
-    console.log(data);
+
+const create_acc_success = function(){
+    $("#create-acc-form").hide();
+    $("#create-modal-footer").hide();
+    $("#create-acc-form-failure").hide();
+    $("#create-acc-form-success").show();
 }
 
+const create_acc_failure = function(data){
+    console.log(data);
+    $("#create-acc-form").hide();
+    $("#create-modal-footer").hide();
+    $("#create-acc-form-success").hide();
+    $("#create-acc-form-failure").text(data);
+    $("#create-acc-form-failure").show();
+}
+
+const initializeModal = function(){
+    $("#create-modal").modal("hide");
+    $("#create-acc-form-success").hide();
+    $("#create-acc-form-failure").hide();
+};
+
+const resetModalBody = function(){
+    $("#create-acc-form-success").hide();
+    $("#create-acc-form-failure").hide();
+    $("#create-acc-form").show();
+    $("#create-modal-footer").show();
+}
 
 $(document).ready(function(){
-    $("#create-modal").modal("hide");
+   
+    initializeModal();
 
 
     /*************************
@@ -13,6 +39,7 @@ $(document).ready(function(){
     *************************/
 
     $("#create-acc-modal-btn").click(()=>{
+        resetModalBody();
         $("#create-modal").modal("show");
     });
 
@@ -20,7 +47,7 @@ $(document).ready(function(){
         let formData = $("#create-acc-form").serialize();
         
         $.post(CREATE_ACC_URL, formData, create_acc_success, "text")
-            .fail(()=>{ console.log("Error in creating account.")});
+            .fail((jqXHR)=>create_acc_failure(jqXHR.responseText));
     });
 
 });

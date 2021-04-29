@@ -55,7 +55,14 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <!-- Alert success or failure -->
+            <div id="create-acc-form-success" class="alert alert-success" role="alert">
+              The account was created succesfully!
+            </div>
+            <div id="create-acc-form-failure" class="alert alert-danger" role="alert">
+              Failure!
+            </div>
+            <div id="create-modal-footer" class="modal-footer">
               <button id="create-acc-btn" type="button" class="btn btn-primary">
                 Create Account
               </button>
@@ -64,7 +71,6 @@
           </div>
         </div>
       </div>
-
 <script src="../static/scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
 <script src="../static/scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
 <script src="../static/scripts/home.js" th:src="@{/scripts/home.js}"></script>

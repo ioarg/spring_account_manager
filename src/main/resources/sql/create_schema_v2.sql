@@ -1,3 +1,4 @@
+create database if not exists homeapps_sec;
 use homeapps_sec;
 
 drop table if exists users;
