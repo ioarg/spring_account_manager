@@ -1,10 +1,25 @@
-body{
-    background-color: #376369;
-    color: white;
+/* Global variables */
+:root{
+    --font-color: #ffffff;
 }
 
-#create-modal{
-    color: black;
+html{
+    height: 100%;
+}
+
+body{
+    /* background-color: var(--bg-color); */
+    background-image : linear-gradient(45deg, #202020, #246668);
+    color: var(--font-color);
+    height : 100%;
+}
+
+.modal-content{
+    background-color: #248e92 ;
+}
+
+#create-modal, .modal-title{
+    font-weight: bold;
 }
 
 .main-form{
@@ -12,12 +27,10 @@ body{
     height: 250px;
     margin-left : auto;
     margin-right : auto;
-    color : white;
-    background-color: #257f8d;
+    color : var(--font-color);
+    background-color: #2d95a5;
     font-weight: bold;
     padding: 20px;
-    border-radius:10px;
-    box-shadow: 1px 1px 4px black;
 }
 
 
@@ -27,7 +40,7 @@ body{
 }
 
 .centered-box{
-    padding: 20px;
+    padding: 40px;
     text-align: center;
     width: 500px;
     margin-left: auto;

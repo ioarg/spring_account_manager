@@ -3,7 +3,13 @@ package jarg.templates.account_manager.security.users.entities;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
+/**
+ * The logged in user. User information is stored in
+ * and retrieved from a database.
+ */
 @Entity
 @Table(name="users")
 public class User {
@@ -11,12 +17,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotEmpty(message="is required")
     @Column(name="username", nullable = false)
     private String username;
+    @NotEmpty(message="is required")
     @Column(name="pass_word", nullable = false)
     private String password;
+    @NotEmpty(message="is required")
     @Column(name="first_name")
     private String firstName;
+    @NotEmpty(message="is required")
     @Column(name="last_name")
     private String lastName;
     @Column(name = "enabled")
@@ -28,7 +38,8 @@ public class User {
 
 
     public User(){
-
+        enabled = true;
+        authorities = new Authorities("ROLE_USER");
     }
 
     public User(String username, String password, String firstName, String lastName) {

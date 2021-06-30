@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Security configuration for the application.
+ */
 @Configuration
 @EnableWebSecurity
 @PropertySource("classpath:security.properties")
@@ -24,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    /***********************************************************************
+    /* **********************************************************************
     * Configure the Authentication here
     ************************************************************************/
     @Bean
@@ -45,15 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
-    /***********************************************************************
-     * Configure the Authorization here
-     ************************************************************************/
-    /* Remember :
-    *   * Roles require the prefix "ROLE_" in the database
-    *   * Users without a role are considered not existent
-    *   * formLogin needs to also permit the custom login page
-    *   * CSRF is automatically enabled and allows only POST logout
-    */
+    /* **********************************************************************
+    * Configure the Authorization here
+    *   - Roles require the prefix "ROLE_" in the database
+    *   - Users without a role are considered not existent
+    *   - formLogin needs to also permit the custom login page
+    *   - CSRF is automatically enabled and allows only POST logout
+    *************************************************************************/
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String registrationPage = env.getProperty("security.web_pages.registrationPage");
@@ -62,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/styles/**", "/scripts/**",
-                        "/create_account", "/delete_account", "/update_names")
+                        "/create_account")
                     .permitAll()
                 .anyRequest()
                     .authenticated()
@@ -79,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                     .logoutUrl(logoutProcessingUrl)
+                    .logoutSuccessUrl(registrationPage)
                 .permitAll();
     }
 }

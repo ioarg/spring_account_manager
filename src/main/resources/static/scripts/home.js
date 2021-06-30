@@ -33,11 +33,10 @@ $(document).ready(function(){
    
     initializeModal();
 
-
     /*************************
      * Create an account
     *************************/
-
+   
     $("#create-acc-modal-btn").click(()=>{
         resetModalBody();
         $("#create-modal").modal("show");
@@ -45,7 +44,7 @@ $(document).ready(function(){
 
     $("#create-acc-btn").click(()=>{
         let formData = $("#create-acc-form").serialize();
-        
+        console.log(formData);
         $.post(CREATE_ACC_URL, formData, create_acc_success, "text")
             .fail((jqXHR)=>create_acc_failure(jqXHR.responseText));
     });

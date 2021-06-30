@@ -6,19 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
  * Controller for managing account creation, deletion and updates.
  */
-@RestController
+@Controller
 public class AccountController {
 
     @Autowired
@@ -28,10 +27,9 @@ public class AccountController {
 
     /**
      * Creates a user account with the provided details.
-     * @param username the username
-     * @param password the password
-     * @param firstName the First Name of the user
-     * @param lastName the Last Name of the user
+     *
+     * @param user a {@link ModelAttribute} used for data binding.
+     *             Represents the user.
      * @return A String indicating success. The client needs this as a
      *          response, in order to be redirected to the login page on
      *          success.
@@ -39,22 +37,19 @@ public class AccountController {
     @PostMapping(
             path = "/create_account",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createAccount(@RequestParam("username") String username,
-                                               @RequestParam("password") String password,
-                                               @RequestParam("first_name") String firstName,
-                                               @RequestParam("last_name") String lastName){
+    @ResponseBody
+    public ResponseEntity<String> createAccount(@Valid @ModelAttribute("user") User user){
 
         // check if the username already exists
-        Optional<User> userOptional = repository.findByUsername(username);
+        Optional<User> userOptional = repository.findByUsername(user.getUsername());
         if (userOptional.isPresent()){
             return ResponseEntity.badRequest().body("Failed to create account. This username already exists.");
         }
 
         // let's encrypt the password first
-        String encrPassword = passwordEncoder.encode(password);
-        // save username and password to db
-        User newUser = new User(username, encrPassword, firstName, lastName);
-        repository.save(newUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // save user to db
+        repository.save(user);
 
         return ResponseEntity.ok("Success");
     }
@@ -71,58 +66,23 @@ public class AccountController {
     private Optional<User> getUser(HttpServletRequest request){
         HttpSession session = request.getSession();
         String userName = (String) session.getAttribute("username");
+        System.out.println("Got user : "+userName);
         return repository.findByUsername(userName);
     }
 
     /**
      * Handles a request to delete an account.
      * @param request the {@link HttpServletRequest}.
-     * @return  A String indicating success or failure.
+     * @return  the url that the user will be redirected to.
      */
-    @PostMapping(
-            path = "/delete_account",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/delete_account")
     public String deleteAccount(HttpServletRequest request){
         Optional<User> userOpt = getUser(request);
-        if(userOpt.isPresent()){
-            return "User not found.";
+        if(!userOpt.isPresent()){
+            return "redirect:/";
         }
         repository.delete(userOpt.get());
-        return "done";
-    }
-
-
-    /**
-     * Handles a request to update the First Name, the Last Name or both names
-     * of a user.
-     * @param request the {@link HttpServletRequest}.
-     * @param firstName the First Name of the user.
-     * @param lastName the Last Name of the user.
-     * @return  A String indicating success or failure.
-     */
-    @PatchMapping(
-            path = "/update_names",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public String updateBothNames(HttpServletRequest request,
-                                  @RequestParam("first_name") String firstName,
-                                  @RequestParam("last_name") String lastName){
-        if( (firstName == null) && (lastName == null) ){
-            return "Only either the First Name or the Last Name can be empty, " +
-                    "not both";
-        }
-        Optional<User> userOpt = getUser(request);
-        if(userOpt.isPresent()){
-            return "User not found.";
-        }
-        User user = userOpt.get();
-        if(firstName != null){
-            user.setFirstName(firstName);
-        }
-        if(lastName != null) {
-            user.setLastName(lastName);
-        }
-        repository.save(user);
-        return "done";
+        request.getSession().invalidate();
+        return "redirect:/home";
     }
 }

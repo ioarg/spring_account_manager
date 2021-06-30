@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Service used for retrieving a user by its username, from a database.
+ */
 @Service
 public class AuthUserDetailsService implements UserDetailsService {
 

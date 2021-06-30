@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Security Module</title>
+    <title>Security Template</title>
     <link rel="stylesheet" href="../static/styles/bootstrap.min.css" th:href="@{/styles/bootstrap.min.css}">
     <link rel="stylesheet" href="../static/styles/main_style.css" th:href="@{/styles/main_style.css}">
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Security Template</a>
-        </div>
-    </nav>
     <!-- Main Page Body -->
     <div class="container-fluid">
-        <h4 class="centered-box">Welcome to this Spring Security Module</h4>
+        <h2 class="centered-box">Spring Security Template</h2>
 
         <form class="main-form" th:action="@{/connect}" method="POST">
             <div class="form-group">
                 <label for="username">Username</label><br>
-                <input type="text" id="username" name="username" class="form-control">
+                <input type="text" id="con_username" name="username" class="form-control">
                 <label for="password">Password</label><br>
-                <input type="password" id="password" name="password" class="form-control"><br>
+                <input type="password" id="con_password" name="password" class="form-control"><br>
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
@@ -42,22 +37,22 @@
               </button>
             </div>
             <div class="modal-body">
-                <form id="create-acc-form" th:action="@{/create_account}" method="POST">
+                <form id="create-acc-form" th:action="@{/create_account}" method="POST" th:object="${user}">
                     <div class="form-group">
                         <label for="username">Username</label><br>
-                        <input type="text" id="username" name="username" class="form-control">
+                        <input type="text" id="username" name="username" class="form-control" th:field="*{username}">
                         <label for="password">Password</label><br>
-                        <input type="password" id="password" name="password" class="form-control">
+                        <input type="password" id="password" name="password" class="form-control" th:field="*{password}">
                         <label for="first_name">First Name</label><br>
-                        <input type="text" id="first_name" name="first_name" class="form-control">
+                        <input type="text" id="first_name" name="first_name" class="form-control" th:field="*{firstName}">
                         <label for="last_name">Last Name</label><br>
-                        <input type="text" id="last_name" name="last_name" class="form-control">
+                        <input type="text" id="last_name" name="last_name" class="form-control" th:field="*{lastName}">
                     </div>
                 </form>
             </div>
             <!-- Alert success or failure -->
             <div id="create-acc-form-success" class="alert alert-success" role="alert">
-              The account was created succesfully!
+              The account was created successfully!
             </div>
             <div id="create-acc-form-failure" class="alert alert-danger" role="alert">
               Failure!

@@ -3,6 +3,9 @@ package jarg.templates.account_manager.security.users.entities;
 
 import javax.persistence.*;
 
+/**
+ * A {@link User user's} authorities.
+ */
 @Entity
 @Table(name="authorities")
 public class Authorities {

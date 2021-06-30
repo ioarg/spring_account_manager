@@ -4,18 +4,65 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../static/styles/bootstrap.min.css" th:href="@{/styles/bootstrap.min.css}">
-
 </head>
 <body>
-    <p>Hello <span th:text="${firstName}">[First Name]</span> <span th:text="${lastName}">[LastName]</span> </p>
-    <p>Welcome to your dashboard!</p>
-
-    <form th:action="@{/logout}" method="POST">
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Logout</button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" 
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" 
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" id="delete-acc-btn" href="#">Delete Account</a>
+                <a class="dropdown-item" id="logout-btn" href="#">Logout</a>
+                </div>
+            </li>
+            </ul>
         </div>
-    </form>
-<script src="../scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
-<script src="../scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
+        </nav>
+    <p>Hello
+        <span th:text="${session.firstName}"> [First Name]</span>
+        <span th:text="${session.lastName}"> [LastName]</span>
+
+        <!-- Hidden forms that get CSRF token -->
+        <form id="logout-form" method="POST" th:action="@{/logout}">
+          <input id="logout-submit-btn" type="submit" value="Logout">
+        </form>
+        <form id="delete-form" method="POST" th:action="@{/delete_account}">
+          <input id="delete-submit-btn" type="submit" value="Delete">
+        </form>
+    </p>
+    <p>Welcome to your dashboard!</p>
+    <!-- Dialog for deleting a user account -->
+    <div id="delete-acc-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete User Account</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div id="delete-modal-footer" class="modal-footer">
+                <p>You are going to delete the account. Are you sure?</p>
+                <button id="delete-acc-confirm-btn" type="button" class="btn btn-primary">
+                    Delete Account
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<script src="../static/scripts/jquery-3.3.1.min.js" th:src="@{/scripts/jquery-3.3.1.min.js}"></script>
+<script src="../static/scripts/bootstrap.min.js" th:src="@{/scripts/bootstrap.min.js}"></script>
+<script src="../static/scripts/dashboard.js" th:src="@{/scripts/dashboard.js}"></script>
 </body>
 </html>

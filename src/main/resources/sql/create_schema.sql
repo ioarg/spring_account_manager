@@ -1,31 +1,22 @@
-use homeapps_sec;
+drop table if exists users;
+drop table if exists authorities;
 
-drop table authorities;
-drop table users;
+create table authorities (
+    id int not null primary key auto_increment,
+	roles varchar(50) not null
+);
+
 create table users(
-	username varchar(50) not null primary key,
-	password varchar(68) not null,
-	enabled boolean not null
-);
-
-create table if not exists authorities (
+    id int not null primary key auto_increment,
 	username varchar(50) not null,
-	authority varchar(50) not null,
-	constraint fk_authorities_users 
-	foreign key(username) 
-		references users(username)
-        on delete cascade
+	pass_word varchar(68) not null,
+	first_name varchar(50) not null,
+	last_name varchar(50),
+	enabled boolean not null,
+    authority_id int not null,
+	constraint fk_user_authorities
+	foreign key(authority_id)
+	    references authorities(id)
+	    on delete cascade
 );
         
-create unique index ix_auth_username 
-on authorities (username,authority);
-
-insert into users 
-values ("test", 
-		"{bcrypt}$2y$12$FXwy9NvH6780O4rJmlSf5OPvbb0doAmdV8mlMBW934345vVc9kJSK",
-		1),
-        ("test2", "test", 1);
-        
-insert into authorities
-values ("test", "ROLE_USER"),
-("test2", "ROLE_USER")

@@ -12,6 +12,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Provides basic user information, that is used for authentication and authorization.
+ */
 public class AuthUserDetails implements UserDetails {
     private static final Logger logger = LoggerFactory.getLogger(AuthUserDetails.class);
 
